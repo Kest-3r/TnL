@@ -10,7 +10,6 @@ public class Viva1Q3 {
 
         //prime number route
        if(primeCheck(inp_num)){
-            System.out.println(inp_num);
             System.out.println("Integer is a prime number");
        }
        //non prime number route
@@ -42,15 +41,17 @@ public class Viva1Q3 {
             System.out.println(inp_num+" is not a perfect number");
             //list prime number
             System.out.print("Prime numbers between 2 and "+inp_num+": ");
+            boolean first=true;
             for (int i = 2; i < inp_num+1; i++) {
                 if (primeCheck(i)) {
-                    boolean first=true;
+
                     if(first) {
                         System.out.print(i);
                         first=false;
+                    }else {
+                        System.out.print(", ");
+                        System.out.print(i);
                     }
-                    System.out.print(", ");
-                    System.out.print(i);
                 }
             }
             System.out.print("\n");
