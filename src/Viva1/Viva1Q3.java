@@ -1,118 +1,131 @@
 package Viva1;
 import java.util.Scanner;
 public class Viva1Q3 {
-    public static void main(String[] args){
 
-        Scanner scanner = new Scanner(System.in);
-        boolean start = true;
-        while(start){
-            System.out.print("Enter number: ");
-            int num = scanner.nextInt();
-            //check negative number
-            if (num<=0) {
-            System.out.println("Please insert a positive number");
-        }
-            //find prime or not
-        else if (primeCheck(num)) {
-                System.out.println("Integer is a prime number");
-                perfectCheck(num);
-            } else if (!primeCheck(num)) {
-                System.out.print("Integer is not a prime number");
-                numFactor(num);
-                listFactorSumProduct(num);
-                perfectCheck(num);
-                primeList(num);
+   public static void main(String[] args) {
+       Scanner sc = new Scanner(System.in);
 
-            } else {
-                System.out.println("Error");
+       System.out.print("Enter number: ");
+       int inp_num= sc.nextInt();
+
+        //prime number route
+       if(primeCheck(inp_num)){
+            System.out.println(inp_num);
+            System.out.println("Integer is a prime number");
+       }
+       //non prime number route
+       else{
+            System.out.println("Integer is not a prime number, it has "+numFac(inp_num)+" factors.");
+            System.out.println("The factors of this integer are:");
+            //list factors
+            for (int i = 1; i < inp_num+1; i++) {
+               if (inp_num % i == 0) {
+                   System.out.print(i);
+                   if(i == inp_num)break;
+                   System.out.print(", ");
+               }
+            }
+            System.out.print("\n");
+            System.out.print("The sum of the factors is ");
+            System.out.print(sumFac(inp_num)+"\n");
+            //overflow
+            if(overflowCheck(inp_num)){
+                System.out.println("The product of the factors is too large to display");
+            }
+            else{
+                System.out.println("The product of the factors is "+prodFac(inp_num));
+            }
+            //perfect number
+            if(perfectCheck(inp_num)){
+            System.out.println(inp_num+" is a perfect number");
+            }else{
+            System.out.println(inp_num+" is not a perfect number");
+            //list prime number
+            System.out.print("Prime numbers between 2 and "+inp_num+": ");
+            for (int i = 2; i < inp_num+1; i++) {
+                if (primeCheck(i)) {
+                    boolean first=true;
+                    if(first) {
+                        System.out.print(i);
+                        first=false;
+                    }
+                    System.out.print(", ");
+                    System.out.print(i);
+                }
+            }
+            System.out.print("\n");
+
+       }
+   }
+}
+
+
+
+    public static int numFac(int num){
+       int numFac=0;
+        for (int i = 1; i < num+1; i++) {
+            if (num % i == 0) {
+                numFac++;
             }
         }
+        return numFac;
     }
 
-    //Check prime
-    public static boolean primeCheck(int num){
-        if (num <= 1){
-            return false;
+    public static int sumFac(int num){
+        int sum=0;
+        for (int i = 1; i < num+1; i++) {
+            if (num % i == 0) {
+                sum=sum+i;
+            }
         }
-        for(int i=2;i<=num/2;i++){
-            if(num%i==0){
+        return sum;
+    }
+
+    public static int prodFac(int num){
+        int product=1;
+        for (int i = 1; i < num+1; i++) {
+            if (num % i == 0) {
+                product= product*i;
+            }
+        }
+        return product;
+    }
+
+    //return true when prime
+    public static boolean primeCheck(int num){
+        for (int i = 2; i < num; i++){
+            if (num % i == 0){
                 return false;
             }
         }
-        return true;
-    }
-    //Display number of factors
-    public static void numFactor(int num){
-        int counter = 0;
-        for (int i = 2; i < num / 2; i++) {
-            if (num % i == 0) {
-                counter++;
-            }
-        }
-        counter++;
-        System.out.print(",it has "+counter+" factors\n");
+       return true;
     }
 
-    //find factor
-    //sum and product of factor
-    public static void listFactorSumProduct(int num) {
-        lFSP_loop:
-        {
-            if (num <= 1) {
-                System.out.println("The factors of integer are:\n" + num);
-                break lFSP_loop;
-            }
 
-            long sum=0;
-            long product=1;
-            boolean overflow=false;
-            System.out.println("The factors of integer are:");
-            for (long i = 2; i < num / 2; i++) {
-
-                if (num % i == 0) {
-                    sum = sum+i;
-                    product = product * i;
-                    if(product>Long.MAX_VALUE/i){
-                        overflow=true;
-                    }
-                    System.out.print(i+",");
-                }
-            }
-            System.out.print(num+"\n");
-            System.out.println("The sum of the factor is "+ sum);
-            //Overflow check
-            if(overflow) {
-                System.out.println("The product of the factors is too large to display");
-            }else {
-                System.out.println("The product of the factor is " + product);
-            }
-        }
-    }
-
-    //Check perfect
-    public static void perfectCheck(int num){
-        int sum=0;
-        for (int i = 2; i < num; i++) {
+   //return true when perfect
+    public static boolean perfectCheck(int num){
+        int sum = 0 ;
+        for (int i = 1; i < num; i++) {
             if(num%i==0){
                 sum=sum+i;
             }
         }
-        if(sum==num) {
-            System.out.println(num + " is a perfect number");
-        }
-        else{
-            System.out.println(num + " is not a perfect number");
-        }
+        return sum == num;
     }
 
-    //List prime
-    public static void primeList(int num){
-        System.out.print("The prime numbers between 2 and "+num+": ");
-        for(int i=2;i<num/2;i++){
-            if(num%i==0){
-                System.out.print(i+",");
+    public static boolean overflowCheck(int inp_num) {
+        long product = 1;
+        boolean overflow = false;
+        for (long i = 1; i < inp_num + 1; i++) {
+            if (inp_num % i == 0) {
+                try{
+                    //attempt to trigger overflow
+                    Math.multiplyExact(product, i);
+                }catch(ArithmeticException e){
+                    overflow = true;
+                }
             }
         }
-        System.out.print(num+"\n");
+        return overflow;
     }
 }
