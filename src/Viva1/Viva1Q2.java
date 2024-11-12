@@ -1,4 +1,5 @@
 package Viva1;
+
 import java.util.Scanner;
 
 public class Viva1Q2 {

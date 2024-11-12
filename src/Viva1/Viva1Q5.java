@@ -9,7 +9,6 @@ public class Viva1Q5 {
 
         String[] stringArray = input.split("REMIX");
         String sentence = "";
-        boolean firstWord=true;
 
         for(int i=0;i<stringArray.length;i++){
             if(!(stringArray[i].isEmpty())){
@@ -17,6 +16,5 @@ public class Viva1Q5 {
             }
         }
         System.out.println(sentence);
-
     }
 }
