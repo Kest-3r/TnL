@@ -55,7 +55,6 @@ public class Viva1Q3 {
                 }
             }
             System.out.print("\n");
-
        }
    }
 }
@@ -82,8 +81,8 @@ public class Viva1Q3 {
         return sum;
     }
 
-    public static int prodFac(int num){
-        int product=1;
+    public static long prodFac(int num){
+        long product=1;
         for (int i = 1; i <= num; i++) {
             if (num % i == 0) {
                 product= product*i;
@@ -121,7 +120,7 @@ public class Viva1Q3 {
             if (inp_num % i == 0) {
                 try{
                     //attempt to trigger overflow
-                    Math.multiplyExact(product, i);
+                    product = Math.multiplyExact(product, i);
                 }catch(ArithmeticException e){
                     overflow = true;
                 }
