@@ -6,10 +6,13 @@ public class l6q4 {
     //(24, 8) and (200, 625).
 
     public static int gcd(int a, int b) {
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
+        int max = Math.max(a, b),min = Math.min(a, b);
+        while (min != 0) {
+            int temp = min;
+            //find remainder
+            min = max % min;
+            //set to  min divisor
+            max = temp;
         }
         return a;
     }
