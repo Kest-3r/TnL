@@ -26,7 +26,7 @@ public class test_run {
         int low=0,high=array.length-1,middle,key=28,answer=0;
 
         while(low<=high){
-            middle = (low + high) / 2;
+            middle = (low+high)/2;
             if(key==array[middle]) {
                 answer = middle;
                 break;

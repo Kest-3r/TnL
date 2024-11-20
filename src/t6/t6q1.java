@@ -1,5 +1,7 @@
 package t6;
-
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Random;
 public class t6q1 {
     /*
     1. Write statements for each of the following
@@ -78,16 +80,20 @@ public class t6q1 {
 
         h. Define a static method that generate random number within 0 – 10. The
            method will return the first random number that generate twice.
+            public static int genRD(){
+                Set<Integer> set=new HashSet<>();
+                Random random=new Random();
+                int rp = 0;
+                for(int i =0;i<10;i++){
+                    rp = random.nextInt(10);
+                    if(set.contains(rp)) break;
+                    set.add(rp);
+                }
+                return rp;
+                }
+
      */
     public static void main(String[] args) {
-        String word = "wo2r3d";
-        int letter=0;
-        int digit=0;
-        for(char c : word.toCharArray()){
-            if(Character.isLetter(c)) letter++;
-            else if(Character.isDigit(c)) digit++;
-        }
-        System.out.println("Num letter:"+letter);
-        System.out.println("Num digit:"+digit);
+
     }
 }

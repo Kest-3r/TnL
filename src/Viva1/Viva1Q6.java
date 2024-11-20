@@ -16,7 +16,6 @@ public class Viva1Q6 {
         boolean negativeNum = false;
 
         System.out.print("Enter numbers: ");
-
         while (true) {
             int num = sc.nextInt();
             arr.add(num);
