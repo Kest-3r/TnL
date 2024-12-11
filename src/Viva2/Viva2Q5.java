@@ -1,6 +1,6 @@
 package Viva2;
 
-public class Viva1Q5 {
+public class Viva2Q5 {
     public static void main(String[] args) {
         String[] studentID = {"S0001", "S0002", "S0003", "S0004", "S0005", "S0006"};
         String[] studentName = {"John", "Cindy", "Alex", "Ali", "Rosli", "Roger"};
@@ -37,7 +37,7 @@ public class Viva1Q5 {
         int highestMark = 0;
         String highestMarkName = "";
         for (int i = 0; i < studentInfo.length; i++) {
-            if(Integer.parseInt(studentInfo[i][2])>highestMark){
+                if(Integer.parseInt(studentInfo[i][2])>highestMark){
                 highestMark = Integer.parseInt(studentInfo[i][2]);
                 highestMarkName = studentInfo[i][1];
             }
