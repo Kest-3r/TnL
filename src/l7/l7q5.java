@@ -4,57 +4,53 @@ import java.io.*;
 import java.util.Arrays;
 
 public class l7q5 {
-    public static void main(String [] args){
-        String [] nameArr;
-        int [] ageArr;
-        char [] genderArr;
-        int [] indexArr;
-        boolean sortable = true;
-        int num = 0;
-
-        try{
-            ObjectInputStream o = new ObjectInputStream(new FileInputStream("C:\\Users\\user\\IdeaProjects\\Homework\\Lab07\\person.dat"));
-            try{
-                num = o.readInt();
-                nameArr = new String[num];
-                ageArr = new int[num];
-                genderArr = new char[num];
-                indexArr = new int[num];
-
-                for(int i = 0; i<num; i++){
-                    nameArr[i] = o.readUTF();
-                    ageArr[i] = o.readInt();
-                    genderArr[i] = o.readChar();
-                }
-
-                o.close();
-                for(int i = 0; i< indexArr.length; i++){
-                    indexArr[i] = i;
-                }
-
-                while(sortable){
-                    sortable = false;
-
-                    for(int i = 0 ; i< indexArr.length-1; i++){
-                        if(nameArr[indexArr[i]].compareTo(nameArr[indexArr[i+1]]) > 0){
-                            int temp = indexArr[i];
-                            indexArr[i] = indexArr[i+1];
-                            indexArr[i+1] = temp;
-                        }
-                    }
-                }
-
-                for(int i = 0; i< indexArr.length; i++){
-                    System.out.printf("%-20s %-3d %s \n", nameArr[indexArr[i]],ageArr[indexArr[i]],genderArr[indexArr[i]]);
-                }
-            }catch(EOFException e){
-                System.out.println("End of file");
+    public static void main(String[] args) {
+        try {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("C:/Users/keste/IdeaProjects/TnL/Lab07/person.dat"));
+            int recordNum = inputStream.readInt();
+            String[][] record = new String[recordNum][3];
+            //store dataset
+            for (int i = 0; i < recordNum; i++) {
+                record[i][0] = inputStream.readUTF();
+                record[i][1] = String.format("%d",inputStream.readInt());
+                record[i][2] = String.format("%c",inputStream.readChar());
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            //sort by name
+            for (int i = 0; i < recordNum; i++) {
+                for (int j = 0; j < recordNum-1; j++){
+                    if(letterCompare(record,j)){
+                        String temp_Name = record[j][0];
+                        String temp_Age = record[j][1];
+                        String temp_Gender = record[j][2];
+                        record[j][0] = record[j+1][0];
+                        record[j][1] = record[j+1][1];
+                        record[j][2] = record[j+1][2];
+                        record[j+1][0] = temp_Name;
+                        record[j+1][1] = temp_Age;
+                        record[j+1][2] = temp_Gender;
+                    }
+
+                }
+            }
+
+            //Display record
+            System.out.println("Name\t\t\t\t\t\tAge\t  Gender");
+            for (int i = 0; i < recordNum; i++) {
+                System.out.printf("%-20s\t\t%-3s\t\t%s\n",record[i][0], record[i][1],record[i][2]);
+            }
+
+        }catch(FileNotFoundException e){
+            System.out.print("File not found");
+        }catch(IOException e){
             e.printStackTrace();
         }
+    }
 
+    //true: first word higher in ASCII
+    public static boolean letterCompare(String[][] record,int i){
+        String name1 = record[i][0].replace(" ","").toLowerCase();
+        String name2 = record[i+1][0].replace(" ","").toLowerCase();
+
+        return name1.compareTo(name2)>0;
     }
 }

@@ -8,24 +8,27 @@ import java.util.Scanner;
 public class l7q2 {
     public static void main(String [] args){
         try {
-            URL u = new URL("https://fsktm.um.edu.my");
+            URL u = new URL("http://www.fsktm.um.edu.my");
             URLConnection cnn = u.openConnection();
             InputStream stream = cnn.getInputStream();
             Scanner in = new Scanner(stream);
 
-            StringBuilder result = new StringBuilder();
+            StringBuilder SB = new StringBuilder();
             while(in.hasNextLine()) {
-                result.append(in.nextLine());
+                SB.append(in.nextLine());
             }
 
-            BufferedWriter w = new BufferedWriter(new FileWriter("index.htm"));
-            w.write(result.toString());
-            w.close();
+            in.close();
+
+            PrintWriter outputStream = new PrintWriter(new FileWriter("test.html"));
+            outputStream.write(SB.toString());
+            outputStream.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
         }
         catch (IOException e) {
             System.out.println("IO Error:" + e.getMessage());
         }
-
     }
 
 

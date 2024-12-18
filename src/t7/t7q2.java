@@ -4,8 +4,7 @@ public class t7q2 {
 //    a. PrintWriter out = new PrintWriter(new FileOutputStream ("d:\data\matrix.txt"));
 //
 //      try{
-//        PrintWriter out = new PrintWriter(new
-//                FileOutputStream(“d:\\data\\matrix.txt”);
+//        PrintWriter out = new PrintWriter(new FileOutputStream(“d:\\data\\matrix.txt”);
 //        out.close();
 //      }catch (IOException e){
 //        System.out.println(“Unable to write your file.”);
