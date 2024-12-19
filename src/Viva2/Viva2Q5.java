@@ -5,6 +5,8 @@ public class Viva2Q5 {
         String[] studentID = {"S0001", "S0002", "S0003", "S0004", "S0005", "S0006"};
         String[] studentName = {"John", "Cindy", "Alex", "Ali", "Rosli", "Roger"};
         int[] mark = {59, 62, 21, 36, 85, 74};
+        //2nd array index 0=ID,1=Name,2=mark
+        //student info[] = row for student
         String[][] studentInfo = getStudentInfo(studentID, studentName, mark);
         System.out.println("List of Students and their Marks: ");
         printStudentInfo(studentInfo);

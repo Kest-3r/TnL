@@ -15,6 +15,7 @@ public class l5q6 {
             Arrays.fill(matrix[x], 0);
         }
 
+
         for(int i = 0; i<matrix.length; i++){
             for(int j = 0; j<=i; j++){
                 if(j == 0 || j == i){

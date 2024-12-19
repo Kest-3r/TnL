@@ -2,7 +2,7 @@ package l6;
 
 public class l6q6 {
     public static int reverse(int n){
-        int num=0,multiplier=1;
+        int num=0;
         while (n > 0) {
             num = num*10 + n%10 ;
             n /= 10;
