@@ -28,8 +28,10 @@ public class l8q5 {
                 player1.move();
                 player2.move();
             }
-            if(player1.getScore()>player2.getScore()){}
-            System.out.printf("player 1 won: %d",player1.getScore());
+            if(player1.getScore()>player2.getScore())
+                System.out.printf("player 1 won: %d",player1.getScore());
+            else if(player2.getScore()>player1.getScore())
+                System.out.printf("player 2 won: %d",player2.getScore());
         }
     }
 }
