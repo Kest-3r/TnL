@@ -1,5 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+package Viva3;
+
 import java.util.HashSet;
 import java.util.Random;
 
@@ -15,9 +15,40 @@ class Hero{
         this.HP=HP;
         this.attack=attack;
     }
-    public int calculateDamage(Villain enemy,int rsMultipler){
-        double damage=this.attack*enemy.getDefense();
-        return 0;
+    public double calculateDamage(Villain enemy,int rsMultipler){
+        double domMultiplier = 1.0;
+        //determine domMultiplier
+        if (this.element.equals("Water")) {
+            if (enemy.getElement().equals("Fire")) {
+                domMultiplier = 1.5;
+            } else if (enemy.getElement().equals("Earth")) {
+                domMultiplier = 0.5;
+            }
+        } else if (this.element.equals("Fire")) {
+            if (enemy.getElement().equals("Earth")) {
+                domMultiplier = 1.5;
+            } else if (enemy.getElement().equals("Water")) {
+                domMultiplier = 0.5;
+            }
+        } else if (this.element.equals("Earth")) {
+            if (enemy.getElement().equals("Water")) {
+                domMultiplier = 1.5;
+            } else if (enemy.getElement().equals("Fire")) {
+                domMultiplier = 0.5;
+            }
+        } else if (this.element.equals("Light")) {
+            if (enemy.getElement().equals("Dark")) {
+                domMultiplier = 1.5;
+            }
+        } else if (this.element.equals("Dark")) {
+            if (enemy.getElement().equals("Light")) {
+                domMultiplier = 1.5; // Dark beats Light
+            }
+        }
+        //damage formula
+        double damage = this.attack*domMultiplier*rsMultipler-enemy.getDefense();
+        //if damage<1, damage=1
+        return Math.max(damage,1);
     }
     @Override
     public String toString() {
@@ -29,6 +60,7 @@ class Hero{
     public double getHP() {return this.HP;}
     public double getAttack() {return this.attack;}
 }
+
 class Villain{
     String name;
     String element;
@@ -39,7 +71,7 @@ class Villain{
     int initialCD;
     int CD;
 
-    public Villain(String name,String element,double maxHP,int defense,int attack,int initialCD){
+    public Villain(String name,String element,double maxHP,int attack,int defense,int initialCD){
         this.name=name;
         this.element=element;
         this.maxHP=maxHP;
@@ -50,6 +82,9 @@ class Villain{
     }
     public void getDamaged(double damage){
         this.HP-=damage;
+        if(this.HP<=0){
+            this.HP=0;
+        }
     }
     public void resetHP(){
         this.HP = this.maxHP;
@@ -101,6 +136,8 @@ class Team{
         for(int i=0;i<4;i++){
             initialHP+=heroList[i].getHP();
         }
+        //display Team HP
+        System.out.printf("Team's HP: %.1f\n\n",getInitialHP());
     }
     public void getDamaged(Double damage){
         HP -= damage;
@@ -121,6 +158,8 @@ class Team{
         return strHeroList.toString();
     }
     public double getInitialHP() {return this.initialHP;}
+    public double getHP() {return this.HP;}
+    public Hero[] getHeroList() {return this.heroList;}
 }
 
 class Game{
@@ -141,25 +180,81 @@ class Game{
         }
     }
 
+    public int checkNumRune(Hero hero){
+        int i=0;
+        for(String rune:currentRunes){
+            if(hero.getElement()==rune) i++;
+        }
+        return i;
+    }
+
     public void displayRunes(){
         System.out.println("Runestones dissolved:");
         for(String rune:currentRunes){
             System.out.printf("-%s\n",rune);
         }
+        System.out.println();
+    }
+
+    public void displayHeroesDamage(Team team,Villain enemy){
+        //counter to check number of attacks made
+        int counter=0;
+        double damage;
+        for(int i =0;i<4;i++){
+            Hero[] heroes =team.getHeroList();
+            if(checkNumRune(heroes[i])>=1){
+                damage=heroes[i].calculateDamage(enemy,checkNumRune(heroes[i]));
+                enemy.getDamaged(damage);
+                System.out.printf("%s dealt %.1f to %s\n",heroes[i].getName(),damage,enemy.getName() );
+                counter++;
+            }
+        }
+        if(counter==0) System.out.println("No hero attacked this round");
+        System.out.println();
+    }
+    public void displayEnemyDamage(Team team,Villain enemy){
+        if(enemy.getCD()==1&&enemy.getHP()>0){
+            double damage = enemy.attack;
+            team.getDamaged(damage);
+            enemy.resetCD();
+            System.out.printf("%s dealt %.1f damage to the team\n\n",enemy.getName(),damage);
+        }else{
+            enemy.decreaseCD();
+        }
     }
 
     public void battle(Team team,Villain enemy){
+        //reset state
         team.resetTeamHP();
         enemy.resetHP();
         enemy.resetCD();
-        System.out.printf("Team's HP: %.1f\n\n",team.getInitialHP());
-        System.out.print(team);
-        selectRunes();
-        displayRunes();
+        int round=1;
+        boolean teamWon=false;
+        boolean enemyWon=false;
+        // Round start
+        while(team.getHP()>0&&enemy.getHP()>0){
+            selectRunes();
+            System.out.printf("Round: %d\n",round);
+            System.out.printf("Enemy's current CD: %d\n",enemy.getCD());
+            displayRunes();
+            displayHeroesDamage(team,enemy);
+            displayEnemyDamage(team,enemy);
+            System.out.printf("Team's remaining HP: %.1f\n",team.getHP());
+            System.out.printf("Enemy's remaining HP: %.1f\n\n",enemy.getHP());
+            round++;
+        }
+
+        if(team.getHP()<=0){
+            System.out.println("The team lose.");
+        }else if(enemy.getHP()<=0){
+            System.out.println("The team won!");
+        }
 
     }
 }
-public class Main {
+
+//tester class
+public class Viva3Q6 {
     public static void main(String[] args) {
         Hero molly = new Hero("Molly", "Water", 45, 20);
         Hero sean = new Hero("Sean", "Fire", 36, 24);
