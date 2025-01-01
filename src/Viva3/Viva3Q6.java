@@ -1,5 +1,5 @@
-package Viva3;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -48,12 +48,11 @@ class Villain{
         this.initialCD=initialCD;
 
     }
-    public int getDamaged(double damage){
-        return 0;
+    public void getDamaged(double damage){
+        this.HP-=damage;
     }
-    public int resetHP(){
+    public void resetHP(){
         this.HP = this.maxHP;
-        return 0;
     }
     public void decreaseCD(){
         this.CD--;
@@ -75,42 +74,43 @@ class Villain{
 }
 
 class Team{
-    String deck;
+    Hero[] deck;
     Hero[] heroList;
-    int hp;
-    public Team(Hero[] newHeroList){
-        heroList=newHeroList;
-        System.out.println(heroList[0].toString());
-        formTeam();
-        toString();
+    double initialHP;
+    double HP;
+    public Team(Hero[] heroes){
+        deck=heroes;
     }
     public void formTeam(){
         HashSet<Integer> visit=new HashSet<>();
         Random random = new Random();
-        this.heroList=new Hero[4];
+        heroList=new Hero[4];
         boolean fullTeam=false;
         // j=current row i=row
-
         int j=0;
         while (!fullTeam) {
-
-            int i = random.nextInt(0,heroList.length);
+            int i = random.nextInt(0,deck.length);
             if(!visit.contains(i)){
-                System.out.println("working");
-                this.heroList[j]=heroList[i];
-                System.out.println(this.heroList[j].toString());
+                heroList[j]=deck[i];
                 visit.add(i);
                 j++;
             }
             if(j==4) fullTeam=true;
         }
-
+        //set hp
+        for(int i=0;i<4;i++){
+            initialHP+=heroList[i].getHP();
+        }
     }
-    public int getDamaged(Double damage){
-        return 0;
+    public void getDamaged(Double damage){
+        HP -= damage;
+        if(HP<0){
+            //set to 0 for negative HP
+            HP=0;
+        }
     }
-    public void resetHP(){
-
+    public void resetTeamHP(){
+        HP=initialHP;
     }
     @Override
     public String toString() {
@@ -120,14 +120,46 @@ class Team{
         }
         return strHeroList.toString();
     }
+    public double getInitialHP() {return this.initialHP;}
 }
 
 class Game{
+    public String[] runes = new String[]{"Water","Fire","Earth","Light","Dark"};
+    public String[] currentRunes = new String[3];
+
+    public void selectRunes(){
+        //Select rune
+        Random random = new Random();
+        boolean chooseRunes=false;
+        // i = number of rune
+        int i=0;
+        while (!chooseRunes) {
+            int rdRune = random.nextInt(0,5);
+            currentRunes[i]=runes[rdRune];
+            if(i==2) chooseRunes=true;
+            i++;
+        }
+    }
+
+    public void displayRunes(){
+        System.out.println("Runestones dissolved:");
+        for(String rune:currentRunes){
+            System.out.printf("-%s\n",rune);
+        }
+    }
+
     public void battle(Team team,Villain enemy){
+        team.resetTeamHP();
+        enemy.resetHP();
+        enemy.resetCD();
+        System.out.printf("Team's HP: %.1f\n\n",team.getInitialHP());
+        System.out.print(team);
+        selectRunes();
+        displayRunes();
 
     }
 }
-public class Viva3Q6 {
+public class Main {
     public static void main(String[] args) {
         Hero molly = new Hero("Molly", "Water", 45, 20);
         Hero sean = new Hero("Sean", "Fire", 36, 24);
