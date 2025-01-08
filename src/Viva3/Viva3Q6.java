@@ -196,7 +196,7 @@ class Game{
         System.out.println();
     }
 
-    public void displayHeroesDamage(Team team,Villain enemy){
+    public void heroesAttack(Team team, Villain enemy){
         //counter to check number of attacks made
         int counter=0;
         double damage;
@@ -212,7 +212,7 @@ class Game{
         if(counter==0) System.out.println("No hero attacked this round");
         System.out.println();
     }
-    public void displayEnemyDamage(Team team,Villain enemy){
+    public void enemyAttack(Team team, Villain enemy){
         if(enemy.getCD()==1&&enemy.getHP()>0){
             double damage = enemy.attack;
             team.getDamaged(damage);
@@ -237,8 +237,8 @@ class Game{
             System.out.printf("Round: %d\n",round);
             System.out.printf("Enemy's current CD: %d\n",enemy.getCD());
             displayRunes();
-            displayHeroesDamage(team,enemy);
-            displayEnemyDamage(team,enemy);
+            heroesAttack(team,enemy);
+            enemyAttack(team,enemy);
             System.out.printf("Team's remaining HP: %.1f\n",team.getHP());
             System.out.printf("Enemy's remaining HP: %.1f\n\n",enemy.getHP());
             round++;
